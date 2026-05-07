@@ -11,10 +11,17 @@
             "id": "66885194222703b8",
             "type": "leaf",
             "state": {
-              "type": "empty",
-              "state": {},
-              "icon": "lucide-file",
-              "title": "Nueva pestaña"
+              "type": "canvas",
+              "state": {
+                "file": "Project.canvas",
+                "viewState": {
+                  "x": 388.5298393328217,
+                  "y": 276.59909567248803,
+                  "zoom": -0.4093900638416405
+                }
+              },
+              "icon": "lucide-layout-dashboard",
+              "title": "Project"
             }
           }
         ]
@@ -74,7 +81,7 @@
       }
     ],
     "direction": "horizontal",
-    "width": 300
+    "width": 200
   },
   "right": {
     "id": "265a9a4c0bb0fe0c",
@@ -176,14 +183,26 @@
       "daily-notes:Abrir la nota de hoy": false,
       "templates:Insertar plantilla": false,
       "command-palette:Abrir paleta de comandos": false,
-      "bases:Crear nueva base": false
+      "bases:Crear nueva base": false,
+      "canvas-watcher:Run Canvas Watcher": false
     }
   },
-  "active": "b6d605b8d93baea2",
+  "active": "66885194222703b8",
   "lastOpenFiles": [
-    "AGENTS.md",
-    "Project.canvas",
+    "src/configs/__pycache__/config.cpython-313.pyc",
+    "src/configs/__pycache__/__init__.cpython-313.pyc",
+    "src/configs/__pycache__",
+    "src/mobile/benchmark.py",
+    "src/mobile/export.py",
+    "src/training/distillation.py",
+    "src/training/trainer.py",
+    "src/training/losses.py",
+    "src/models/multitask.py",
+    "src/heads/classification.py",
+    "src/heads/segmentation.py",
     "CLAUDE.md",
-    "RULES.md"
+    "Project.canvas",
+    "RULES.md",
+    "AGENTS.md"
   ]
 }

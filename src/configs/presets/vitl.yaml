@@ -1,0 +1,11 @@
+backbone:
+  name: vitl
+  patch_size: 14
+  embed_dim: 1024
+  num_heads: 16
+  depth: 24
+  img_size: 518
+
+depth_head:
+  type: dpt
+  hf_repo: depth-anything/Depth-Anything-V3-Large  # placeholder — confirm during DE-01

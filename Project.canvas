@@ -1,8 +1,445 @@
 {
-	"nodes":[
-		{"id":"canvas-errors","type":"text","text":"## Errors\n✓ None","x":-540,"y":-750,"width":380,"height":200,"color":"1"},
-		{"id":"legend","type":"text","text":"## Legend\n🔴 **Red** = To Do (ready)\n⬜ **Gray** = Blocked\n🟠 **Orange** = Doing\n🔵 **Cyan** = Ready to review\n🟢 **Green** = Done\n🟣 **Purple** = Proposed by agent","x":-540,"y":-310,"width":380,"height":230,"color":"0"},
-		{"id":"canvas-warnings","type":"text","text":"## Warnings\n✓ None","x":-540,"y":-530,"width":380,"height":200,"color":"3"}
+	"nodes": [
+		{
+			"id": "group-depth",
+			"type": "group",
+			"x": 880,
+			"y": 0,
+			"width": 380,
+			"height": 940,
+			"label": "Depth"
+		},
+		{
+			"id": "group-traini",
+			"type": "group",
+			"x": 1760,
+			"y": 0,
+			"width": 380,
+			"height": 760,
+			"label": "Training"
+		},
+		{
+			"id": "group-infras",
+			"type": "group",
+			"x": 0,
+			"y": 0,
+			"width": 380,
+			"height": 700,
+			"label": "Infrastructure"
+		},
+		{
+			"id": "group-backbo",
+			"type": "group",
+			"x": 440,
+			"y": 0,
+			"width": 380,
+			"height": 700,
+			"label": "Backbone"
+		},
+		{
+			"id": "group-heads",
+			"type": "group",
+			"x": 1320,
+			"y": 0,
+			"width": 380,
+			"height": 700,
+			"label": "Heads"
+		},
+		{
+			"id": "group-mobile",
+			"type": "group",
+			"x": 2200,
+			"y": 0,
+			"width": 380,
+			"height": 700,
+			"label": "Mobile"
+		},
+		{
+			"id": "canvas-errors",
+			"type": "text",
+			"text": "## Errors\n✓ None",
+			"x": -540,
+			"y": -750,
+			"width": 380,
+			"height": 200,
+			"color": "1"
+		},
+		{
+			"id": "legend",
+			"type": "text",
+			"text": "## Legend\n🔴 **Red** = To Do (ready)\n⬜ **Gray** = Blocked\n🟠 **Orange** = Doing\n🔵 **Cyan** = Ready to review\n🟢 **Green** = Done\n🟣 **Purple** = Proposed by agent",
+			"x": -540,
+			"y": -310,
+			"width": 380,
+			"height": 230,
+			"color": "0"
+		},
+		{
+			"id": "canvas-warnings",
+			"type": "text",
+			"text": "## Warnings\n✓ None",
+			"x": -540,
+			"y": -530,
+			"width": 380,
+			"height": 200,
+			"color": "3"
+		},
+		{
+			"id": "3793ebe7",
+			"type": "text",
+			"text": "## BA-01 DINOv2 backbone wrapper\nWrap pretrained DINOv2 (vits, vitb, vitl, vitg) as a plain ViT — no task-specific modifications. Config-driven size selection. Expose patch token sequences for downstream heads. Backbone returns a tuple; heads consume only the first element.",
+			"x": 460,
+			"y": 40,
+			"width": 280,
+			"height": 160,
+			"color": "0"
+		},
+		{
+			"id": "4c6682ef",
+			"type": "text",
+			"text": "## BA-02 Input-adaptive attention\nExtend the backbone to support both within-view (Ls) and cross-view (Lg) self-attention so the same model handles arbitrary view counts (mono and multi-view inputs) without architectural changes.",
+			"x": 460,
+			"y": 220,
+			"width": 280,
+			"height": 160,
+			"color": "6"
+		},
+		{
+			"id": "2d097e80",
+			"type": "text",
+			"text": "## DE-01 Study DA3 source and extract spec\nClone the DA3 GitHub repo. Read and document: api.py, da3.py, dpt.py, dinov2.py, input_processor.py, output_processor.py, specs.py, and all config files. Extract: exact backbone-to-head tensor interface, DPT head architecture, weight loading procedure, and every step of the inference function. Output is the implementation spec for all other Depth tasks.",
+			"x": 900,
+			"y": 40,
+			"width": 280,
+			"height": 160,
+			"color": "6"
+		},
+		{
+			"id": "10cc18e1",
+			"type": "text",
+			"text": "## DE-02 Preprocessing pipeline\nPort InputProcessor from DA3 (utils/io/input_processor.py): resize and normalize image(s) into a model-ready tensor. Handle camera extrinsics/intrinsics conversion and _normalize_extrinsics for multi-view inputs. Must match DA3 behavior exactly.",
+			"x": 900,
+			"y": 220,
+			"width": 280,
+			"height": 160,
+			"color": "6"
+		},
+		{
+			"id": "16b53c4c",
+			"type": "text",
+			"text": "## DE-03 Connect pretrained DA3 depth head\nLoad the pretrained DA3 DPT head weights from HuggingFace. Wire it to our DINOv2 backbone wrapper: verify tensor shapes match (backbone tuple → head takes first element). No re-implementation — use DA3's dpt.py directly or port it minimally.",
+			"x": 900,
+			"y": 400,
+			"width": 280,
+			"height": 160,
+			"color": "6"
+		},
+		{
+			"id": "b86933a7",
+			"type": "text",
+			"text": "## HE-01 Segmentation head\nImplement a lightweight dense prediction head (linear probe or small FPN) that takes backbone patch tokens and outputs per-pixel class logits. Strictly decoupled from the backbone.",
+			"x": 1340,
+			"y": 40,
+			"width": 280,
+			"height": 160,
+			"color": "6"
+		},
+		{
+			"id": "393c3655",
+			"type": "text",
+			"text": "## HE-02 Classification head\nImplement a pooling + MLP classification head over the [CLS] token or global-average-pooled patch tokens. Strictly decoupled from the backbone.",
+			"x": 1340,
+			"y": 220,
+			"width": 280,
+			"height": 160,
+			"color": "6"
+		},
+		{
+			"id": "0fef0dcd",
+			"type": "text",
+			"text": "## HE-03 Multi-task model assembly\nCompose backbone + all three heads (depth, segmentation, classification) into a single MultiTaskModel module. Forward pass routes tokens to each head in parallel. Backbone and heads remain strictly decoupled.",
+			"x": 1340,
+			"y": 400,
+			"width": 280,
+			"height": 160,
+			"color": "6"
+		},
+		{
+			"id": "1173c29b",
+			"type": "text",
+			"text": "## IN-01 Project scaffolding\nCreate src/ layout (backbone/, depth/, heads/, training/, mobile/, utils/), requirements.txt (torch, timm, numpy==1.26.4, etc.), and a YAML + dataclass config system. Config must support backbone size selection (vits/vitb/vitl/vitg) and per-task head params.",
+			"x": 20,
+			"y": 40,
+			"width": 280,
+			"height": 160,
+			"color": "5"
+		},
+		{
+			"id": "e64591f3",
+			"type": "text",
+			"text": "## DE-04 Postprocessing pipeline\nPort OutputProcessor (utils/io/output_processor.py) and Prediction class (specs.py): tensor → numpy, remove batch dim, organize outputs. Include _process_mono_sky_estimation (sky pixel classification + depth adjustment) and _align_to_input_extrinsics_intrinsics. Required to match DA3 outputs.",
+			"x": 900,
+			"y": 580,
+			"width": 280,
+			"height": 160,
+			"color": "6"
+		},
+		{
+			"id": "6f21be57",
+			"type": "text",
+			"text": "## DE-05 Qualitative inference test\nRun a set of reference images through the full stack: preprocessing → DINOv2 backbone → pretrained DPT head → postprocessing. Visualize depth maps and compare qualitatively against official DA3 output. This is the Phase 1 exit criterion.",
+			"x": 900,
+			"y": 760,
+			"width": 280,
+			"height": 160,
+			"color": "6"
+		},
+		{
+			"id": "418ffe05",
+			"type": "text",
+			"text": "## TR-01 Data pipeline\nDataset loaders for all three tasks: monocular depth (NYUv2/KITTI), segmentation (ADE20K), classification (ImageNet subset + custom data). Shared preprocessing with consistent resize/crop. Must support custom dataset integration.",
+			"x": 1780,
+			"y": 40,
+			"width": 280,
+			"height": 160,
+			"color": "6"
+		},
+		{
+			"id": "6ec805fa",
+			"type": "text",
+			"text": "## TR-02 Loss functions\nImplement DA3 losses: per-pixel depth loss (LD), ray loss (LM), point cloud consistency loss (LP). Add cross-entropy for segmentation and classification. All losses composable for joint multi-task training.",
+			"x": 1780,
+			"y": 220,
+			"width": 280,
+			"height": 160,
+			"color": "6"
+		},
+		{
+			"id": "9b8d9436",
+			"type": "text",
+			"text": "## TR-03 Frozen-backbone training loop\nTraining script that freezes DINOv2 backbone and trains heads only. Supports single-task and joint multi-task modes. Config-driven LR, batch size, loss weights. Targets HPC cluster with multi-GPU support.",
+			"x": 1780,
+			"y": 400,
+			"width": 280,
+			"height": 160,
+			"color": "6"
+		},
+		{
+			"id": "17b4a374",
+			"type": "text",
+			"text": "## TR-04 Teacher-student distillation\nDistillation pipeline: high-capacity teacher generates pseudo-labels for depth/segmentation where ground truth is sparse (especially useful for custom data). Student (DA3-Small heads) trains on blended real + pseudo labels.",
+			"x": 1780,
+			"y": 580,
+			"width": 280,
+			"height": 160,
+			"color": "6"
+		},
+		{
+			"id": "0bbc9e85",
+			"type": "text",
+			"text": "## MO-01 Param audit and baseline profiling\nVerify backbone parameter counts for each size (vits target: 0.022B). Profile a single forward pass end-to-end to establish baseline FPS. Document bottlenecks per backbone size.",
+			"x": 2220,
+			"y": 40,
+			"width": 280,
+			"height": 160,
+			"color": "6"
+		},
+		{
+			"id": "678a6636",
+			"type": "text",
+			"text": "## MO-02 Model export\nExport MultiTaskModel (and per-head variants) to ONNX. Add conversion scripts for CoreML (iOS) and TFLite (Android) once target platform is decided. Validate numerical parity with PyTorch outputs.",
+			"x": 2220,
+			"y": 220,
+			"width": 280,
+			"height": 160,
+			"color": "6"
+		},
+		{
+			"id": "0a77c589",
+			"type": "text",
+			"text": "## MO-03 On-device latency benchmark\nRun exported models on-device or simulator. Report per-head and end-to-end latency per backbone size. Compare against 160.5 FPS target. Document bottlenecks and propose optimizations.",
+			"x": 2220,
+			"y": 400,
+			"width": 280,
+			"height": 160,
+			"color": "6"
+		}
 	],
-	"edges":[]
+	"edges": [
+		{
+			"id": "edge-001",
+			"fromNode": "1173c29b",
+			"fromSide": "right",
+			"toNode": "3793ebe7",
+			"toSide": "left"
+		},
+		{
+			"id": "edge-002",
+			"fromNode": "3793ebe7",
+			"fromSide": "bottom",
+			"toNode": "4c6682ef",
+			"toSide": "top"
+		},
+		{
+			"id": "edge-003",
+			"fromNode": "1173c29b",
+			"fromSide": "bottom",
+			"toNode": "10cc18e1",
+			"toSide": "top"
+		},
+		{
+			"id": "edge-004",
+			"fromNode": "2d097e80",
+			"fromSide": "bottom",
+			"toNode": "10cc18e1",
+			"toSide": "top"
+		},
+		{
+			"id": "edge-005",
+			"fromNode": "3793ebe7",
+			"fromSide": "bottom",
+			"toNode": "16b53c4c",
+			"toSide": "top"
+		},
+		{
+			"id": "edge-006",
+			"fromNode": "2d097e80",
+			"fromSide": "bottom",
+			"toNode": "16b53c4c",
+			"toSide": "top"
+		},
+		{
+			"id": "edge-007",
+			"fromNode": "1173c29b",
+			"fromSide": "bottom",
+			"toNode": "e64591f3",
+			"toSide": "top"
+		},
+		{
+			"id": "edge-008",
+			"fromNode": "2d097e80",
+			"fromSide": "bottom",
+			"toNode": "e64591f3",
+			"toSide": "top"
+		},
+		{
+			"id": "edge-009",
+			"fromNode": "10cc18e1",
+			"fromSide": "bottom",
+			"toNode": "6f21be57",
+			"toSide": "top"
+		},
+		{
+			"id": "edge-010",
+			"fromNode": "16b53c4c",
+			"fromSide": "bottom",
+			"toNode": "6f21be57",
+			"toSide": "top"
+		},
+		{
+			"id": "edge-011",
+			"fromNode": "e64591f3",
+			"fromSide": "bottom",
+			"toNode": "6f21be57",
+			"toSide": "top"
+		},
+		{
+			"id": "edge-012",
+			"fromNode": "3793ebe7",
+			"fromSide": "right",
+			"toNode": "b86933a7",
+			"toSide": "left"
+		},
+		{
+			"id": "edge-013",
+			"fromNode": "3793ebe7",
+			"fromSide": "bottom",
+			"toNode": "393c3655",
+			"toSide": "top"
+		},
+		{
+			"id": "edge-014",
+			"fromNode": "16b53c4c",
+			"fromSide": "right",
+			"toNode": "0fef0dcd",
+			"toSide": "left"
+		},
+		{
+			"id": "edge-015",
+			"fromNode": "b86933a7",
+			"fromSide": "bottom",
+			"toNode": "0fef0dcd",
+			"toSide": "top"
+		},
+		{
+			"id": "edge-016",
+			"fromNode": "393c3655",
+			"fromSide": "bottom",
+			"toNode": "0fef0dcd",
+			"toSide": "top"
+		},
+		{
+			"id": "edge-017",
+			"fromNode": "1173c29b",
+			"fromSide": "right",
+			"toNode": "418ffe05",
+			"toSide": "left"
+		},
+		{
+			"id": "edge-018",
+			"fromNode": "16b53c4c",
+			"fromSide": "right",
+			"toNode": "6ec805fa",
+			"toSide": "left"
+		},
+		{
+			"id": "edge-019",
+			"fromNode": "0fef0dcd",
+			"fromSide": "right",
+			"toNode": "9b8d9436",
+			"toSide": "left"
+		},
+		{
+			"id": "edge-020",
+			"fromNode": "6ec805fa",
+			"fromSide": "bottom",
+			"toNode": "9b8d9436",
+			"toSide": "top"
+		},
+		{
+			"id": "edge-021",
+			"fromNode": "418ffe05",
+			"fromSide": "bottom",
+			"toNode": "9b8d9436",
+			"toSide": "top"
+		},
+		{
+			"id": "edge-022",
+			"fromNode": "9b8d9436",
+			"fromSide": "bottom",
+			"toNode": "17b4a374",
+			"toSide": "top"
+		},
+		{
+			"id": "edge-023",
+			"fromNode": "0fef0dcd",
+			"fromSide": "right",
+			"toNode": "0bbc9e85",
+			"toSide": "left"
+		},
+		{
+			"id": "edge-024",
+			"fromNode": "0bbc9e85",
+			"fromSide": "bottom",
+			"toNode": "678a6636",
+			"toSide": "top"
+		},
+		{
+			"id": "edge-025",
+			"fromNode": "678a6636",
+			"fromSide": "bottom",
+			"toNode": "0a77c589",
+			"toSide": "top"
+		}
+	]
 }

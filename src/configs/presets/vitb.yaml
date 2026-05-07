@@ -1,0 +1,11 @@
+backbone:
+  name: vitb
+  patch_size: 14
+  embed_dim: 768
+  num_heads: 12
+  depth: 12
+  img_size: 518
+
+depth_head:
+  type: dpt
+  hf_repo: depth-anything/Depth-Anything-V3-Base  # placeholder — confirm during DE-01
